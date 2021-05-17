@@ -1,0 +1,49 @@
+name: fm6000
+version: 'git'
+summary: Simple fetching tool
+description: |
+    ASCII art of Dilbert is taken from the Kakoune text editor https://github.com/mawww/kakoune
+    ASCII art of Alice, PHB is taken from Christopher Johnson's collection
+
+license: GPL-3.0
+
+assumes:
+  - command-chain
+
+base: core18
+grade: stable
+confinement: strict
+compression: lzo
+
+apps:
+  fm6000:
+    command: fm6000.pl
+    command-chain:
+      - bin/debian-multiarch-triplet-provider-launch
+      - bin/perl-launch      
+      
+parts:
+  fm6000:
+    source: https://github.com/anhsirk0/fetch-master-6000
+    source-type: git
+    plugin: dump
+    
+    build-packages:
+      - perl
+      
+  # The perl-launch launcher: Fix Perl applications in the snap runtime
+  # https://forum.snapcraft.io/t/the-perl-launch-launcher-fix-perl-applications-in-the-snap-runtime/11736
+  perl-launch:
+    source: https://github.com/Lin-Buo-Ren/perl-launch.git
+    source-tag: v1.0.0
+    plugin: dump
+    stage:
+      - bin/perl-launch  
+      
+  debian-multiarch-triplet-provider-launch:
+    source: https://github.com/Lin-Buo-Ren/debian-multiarch-triplet-provider-launch.git
+    source-tag: v1.0.0
+    plugin: dump
+    stage:
+      - bin/debian-multiarch-triplet-provider-launch
+
